@@ -1,0 +1,6 @@
+"panomach_5"
+{
+	"Name"		"panomach_5"
+	"Width"		"2048"
+	"Height"	"2048"
+}

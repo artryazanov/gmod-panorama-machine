@@ -1,0 +1,9 @@
+"AddonInfo"
+{
+	"name"			"Panorama Machine"
+    "version"		"1.0"
+	"author_name"	"sk89q"
+	"author_url"	"http://www.sk89q.com"
+	"info"			"Panorama generator for Garry's Mod"
+	"override"		"0"
+}
