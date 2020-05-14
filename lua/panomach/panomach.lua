@@ -81,7 +81,7 @@ local function RestoreHooks()
 end
 
 local function SwitchAwayFromGrav()
-    if ValidEntity(LocalPlayer():GetActiveWeapon()) then
+    if LocalPlayer():GetActiveWeapon():IsValid() then
         lastWeapon = LocalPlayer():GetActiveWeapon():GetClass()
         
         if LocalPlayer():GetActiveWeapon():GetClass() == "weapon_physgun" then
@@ -116,10 +116,11 @@ local function RestoreWeapon()
 end
 
 local function GetBaseFilePath(id, name)
-    if name then
-        return name .. "/"
-    end
-    return id .. "/" .. game.GetMap() .. "_" .. os.date("%Y%m%d%H%M%S") .. "/"
+    --if name then
+    --    return name .. "/"
+    --end
+    --return id .. "/" .. game.GetMap() .. "_" .. os.date("%Y%m%d%H%M%S") .. "/"
+    return id .. "_" .. game.GetMap() .. "_" .. os.date("%Y%m%d%H%M%S")
 end
 
 local function KeyPress()
@@ -183,7 +184,7 @@ local function DoPanorama()
     end
     
     surface.SetTextColor(255, 255, 255, 255)
-    surface.SetFont("ScoreboardText")
+    surface.SetFont("Default")
     surface.SetTextPos(ScrH() + 5, 0)
     surface.DrawText("Panorama in Progress")
     surface.SetTextPos(ScrH() + 5, 15)
@@ -202,6 +203,25 @@ local function DoPanorama()
         
         Msg(string.format("Captured %s -> %s\n", name,
                           "garrysmod/screenshots/" .. baseFilePath .. name))
+    end
+end
+
+local function CopyRT(im, left, top, width, height)
+    render.CapturePixels()
+    for x = left, width - 1, 1
+    do
+        for y = top, height - 1, 1
+        do
+            local r, g, b = render.ReadPixel(x, y)
+
+            local imPix = {}
+            imPix.r = r
+            imPix.g = g
+            imPix.b = b
+            imPix.a = 0
+
+            im:SetPixel(x, y, imPix);
+        end
     end
 end
 
@@ -227,7 +247,10 @@ local function DoImmediatePanorama()
         render.RenderView(data)
         
         local im = image.CreateImage(ScrH(), ScrH())
-        im:CopyRT(0, 0, ScrH(), ScrH())
+
+        --im:CopyRT(0, 0, ScrH(), ScrH())
+        CopyRT(im, 0, 0, ScrH(), ScrH())
+
         im:Save("garrysmod/screenshots/" .. baseFilePath .. name .. ".bmp")
         
         Msg(string.format("Rendered %s -> %s\n", name,
@@ -338,7 +361,7 @@ local function DoPanoramaView()
     end
     
     surface.SetTextColor(255, 255, 255, 255)
-    surface.SetFont("ScoreboardText")
+    surface.SetFont("Default")
     if extendWidth then
         surface.SetTextPos(windowWidth * 3 + 5, 5)
         surface.DrawText("Panorama View in Progress")

@@ -18,7 +18,7 @@
 
 local function SettingsPanel(panel)
 	panel:ClearControls()
-	panel:AddHeader()
+	--panel:AddHeader()
 
     local cbox = panel:AddControl("CheckBox", {
         Label = "Use gm_image",
@@ -63,7 +63,7 @@ end
 
 local function CubicProjectionPanel(panel)
 	panel:ClearControls()
-	panel:AddHeader()
+	--panel:AddHeader()
     
     panel:AddControl("Button", {
         Label = "Capture Cubic Projection",
@@ -77,7 +77,7 @@ end
 
 local function RectilinearProjectionPanel(panel)
 	panel:ClearControls()
-	panel:AddHeader()
+	--panel:AddHeader()
 
 	panel:AddControl("Slider", {
 		Label = "Change in horizontal degrees:",
@@ -107,7 +107,7 @@ end
 
 local function StitchableImagesPanel(panel)
 	panel:ClearControls()
-	panel:AddHeader()
+	--panel:AddHeader()
 
 	panel:AddControl("Slider", {
 		Label = "Change in horizontal degrees:",
@@ -145,7 +145,7 @@ end
 
 local function InformationPanel(panel)
 	panel:ClearControls()
-	panel:AddHeader()
+	--panel:AddHeader()
 
     panel:AddControl("Label", {
         Text = "Resolution: " .. tostring(ScrH()) .. " pixels (square)"
