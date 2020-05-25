@@ -332,17 +332,16 @@ local function DoPanoramaView()
     local width = ScrW()
     local height = ScrH()
     local extendWidth = false
-    
-    if width/height > 3/2 then
-       width = height * 3/2
-       extendWidth = true
-    else
-       height = width * 2/3
-    end
-    
+
+    local vFov = 90
+    local hFov = math.floor((math.atan(math.tan(math.pi / 180 * vFov/2) * width / height) / math.pi * 180 * 2) * 10 + 0.5) / 10;
     local windowWidth = math.floor(width / 3)
-    local windowHeight = windowWidth
-    
+    local windowHeight = math.floor(height / 3)
+    if windowHeight > height then
+        local windowHeight = math.floor(height / 3)
+        local windowWidth = math.floor(windowHeight * wide)
+    end
+
     surface.SetDrawColor(0, 0, 0, 255)
 	surface.DrawRect(0, 0, ScrW(), ScrH())
     
@@ -350,16 +349,42 @@ local function DoPanoramaView()
         local data = {}
         data.drawhud = false
         data.drawviewmodel = false
-        data.fov = 90
-        data.angles = Angle(0, LocalPlayer():EyeAngles().y, 0) + angle
+        data.fov = hFov
+        data.angles = Angle(0, 0, 0) + angle
         data.origin = LocalPlayer():GetShootPos()
-        data.x = (i - 1) % 3 * windowWidth
-        data.y = math.floor((i - 1) / 3) * windowHeight
         data.w = windowWidth
         data.h = windowHeight
+
+        local newI = 1
+        if i == 4 then
+            newI = 2
+        elseif i == 5 then
+            newI = 8
+        elseif i > 5 then
+            newI = 3
+        else
+            newI = i + 3
+        end
+
+        data.x = (newI - 1) % 3 * windowWidth
+        data.y = math.floor((newI - 1) / 3) * windowHeight
+
         render.RenderView(data)
     end
-    
+
+    local data = {}
+    data.drawhud = false
+    data.drawviewmodel = true
+    data.fov = 90
+    data.angles = Angle(LocalPlayer():EyeAngles().x, LocalPlayer():EyeAngles().y, 0)
+    data.origin = LocalPlayer():GetShootPos()
+    data.w = windowWidth
+    data.h = windowHeight
+    local newI = 9
+    data.x = (newI - 1) % 3 * windowWidth
+    data.y = math.floor((newI - 1) / 3) * windowHeight
+    render.RenderView(data)
+
     surface.SetTextColor(255, 255, 255, 255)
     surface.SetFont("Default")
     if extendWidth then
@@ -367,11 +392,15 @@ local function DoPanoramaView()
         surface.DrawText("Panorama View in Progress")
         surface.SetTextPos(windowWidth * 3 + 5, 20)
         surface.DrawText("panomach_stop in console to end")
+        surface.SetTextPos(windowWidth * 3 + 5, 35)
+        surface.DrawText("FOV: " .. hFov)
     else
         surface.SetTextPos(5, windowHeight * 2 + 5)
         surface.DrawText("Panorama View in Progress")
         surface.SetTextPos(5, windowHeight * 2 + 5 + 15)
         surface.DrawText("panomach_stop in console to end")
+        surface.SetTextPos(5, windowHeight * 2 + 5 + 30)
+        surface.DrawText("FOV: " .. hFov)
     end
 end
 
@@ -423,10 +452,19 @@ function PanoMach.ShowAltCubicPanoramaView()
         Msg("Panorama routine already running\n")
         return false
     end
-    
+
+    local vFov = 90
+    local hFov = math.floor((math.atan(math.tan(math.pi / 180 * vFov/2) * ScrW() / ScrH()) / math.pi * 180 * 2) * 10 + 0.5) / 10;
+
     StartPanoramaView({
-        Angle(0, 90, 0), Angle(0, 0, 0), Angle(0, 270, 0),
-        Angle(0, 180, 0), Angle(-90, 0, 0), Angle(90, 0, 0),
+        --Angle(0, 90, 0), Angle(0, 0, 0), Angle(0, 270, 0),
+        --Angle(0, 180, 0), Angle(90, 0, 0), Angle(-90, 0, 0),
+
+        --Angle(0, 90, 0), Angle(0, 0, 0), Angle(0, 270, 0),
+        --Angle(0, 90, 90), Angle(90, 0, 0), Angle(0, 270, -90),
+
+        Angle(0, hFov, 0), Angle(0, 0, 0), Angle(0, -hFov, 0),
+        Angle(-vFov, 0, 0), Angle(vFov, 0, 0), Angle(0, 180, 0),
     })
     
     return true
