@@ -16,7 +16,7 @@
 -- 
 -- $Id$
 
-require("image")
+--require("image")
 
 PanoMach = {}
 
@@ -26,7 +26,7 @@ local useJPEG = CreateClientConVar("panomach_jpeg", "0", true, false)
 local numRTScreens = CreateClientConVar("panomach_rt_count", "0", true, false)
 local prerender = CreateClientConVar("panomach_prerender", "0", true, false)
 local ssDelay = CreateClientConVar("panomach_delay", "0.3", true, false)
-local useImage = CreateClientConVar("panomach_gm_image", "1", true, false)
+local useImage = CreateClientConVar("panomach_gm_image", "0", true, false)
 local rectHorizDegrees = CreateClientConVar("panomach_rect_hdeg", "30", true, false)
 local rectFOV = CreateClientConVar("panomach_rect_fov", "90", true, false)
 local stitchHorizDegrees = CreateClientConVar("panomach_stitch_hdeg", "30", true, false)
