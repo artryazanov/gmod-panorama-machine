@@ -1,1 +1,4 @@
 .idea
+video/ffmpeg*
+video/*.mp4
+video/process/
